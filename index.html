@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Emily Astor · Portafolio 3D</title>
+<meta name="description" content="Emily Astor, diseñadora digital enfocada en diseño 3D y texturas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
+<style>
+/*
+  Tipografías de la identidad:
+  - Alagard (modificada): el título PORTAFOLIO. Pon el archivo en fonts/alagard.ttf (o instálala en tu compu).
+    También se usa en el "Gracias" del pie de página.
+  - VCR OSD Mono: títulos y navegación. Si la subes a tu hosting agrega en su @font-face:
+      url('fonts/VCR_OSD_MONO.ttf') format('truetype')
+  - Cascadia Code: texto. Igual: url('fonts/CascadiaCode.ttf').
+  Mientras tanto se usan VT323 y JetBrains Mono (Google Fonts), muy parecidas.
+  Juego del caballito por las páginas: horse.jpg y horse.mp3 (misma carpeta) aparecen al llegar a 1000 puntos.
+  El caballo de la portada es caballoR.gif en color normal y caballo.gif en Negativo
+  (los dos en la misma carpeta que este archivo).
+*/
+@font-face{font-family:'Alagard';src:local('Alagard'),url('fonts/alagard.ttf') format('truetype');font-display:swap}
+@font-face{font-family:'VCR OSD Mono';src:local('VCR OSD Mono'),local('VCROSDMono');font-display:swap}
+@font-face{font-family:'Cascadia Code';src:local('Cascadia Code'),local('CascadiaCode-Regular');font-display:swap}
+
+/* Layout: portada granate con "Portafolio" y el caballo corriendo; debajo, proyectos grandes
+   que se expanden a página completa al hacer clic. */
+:root{
+  --maroon:#780116; --gold:#F7B538; --cream:#FFF4D6; --navy:#0D1117;
+  --bg:#FFF4D6; --surface:#FBE6AE; --fg:#0D1117; --muted:#5B3B36; --accent:#780116; --rule:#0D1117; --on-accent:#FFF4D6;
+  --osd:'VCR OSD Mono','VT323',ui-monospace,monospace;
+  --body:'Cascadia Code','JetBrains Mono',ui-monospace,Consolas,monospace;
+  --b:3px;
+  --pa-r:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%207%207%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%223%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%220%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22/%3E%3C/svg%3E");--pa-l:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%207%207%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%223%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%222%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%221%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%220%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%221%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%222%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%221%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%222%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22/%3E%3C/svg%3E");--pa-ur:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%207%207%22%20shape-rendering%3D%22crispEdges%22%3E%3Crect%20x%3D%222%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%220%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%225%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%221%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%224%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%222%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%223%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%226%22%20y%3D%223%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%222%22%20y%3D%224%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%221%22%20height%3D%221%22/%3E%3Crect%20x%3D%220%22%20y%3D%226%22%20width%3D%221%22%20height%3D%221%22/%3E%3C/svg%3E");
+  --m-horse:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAADhCAYAAAAQ/2aEAAAFAElEQVR42u3c0U7jQBBFwRjl/385PCIBijt2290zU/W8QmxI5mDv+m4PAMq8Xq/X3p/Ztm2r+HqRr/Xp98ePLy8BAAgwAAgwACDAACDAAIAAA4AAAwACDADteHgaoJH/xi8iQxfR0YxLQmKIQ4ABOof0aLwq4yrU13ELGgAEGAAEGAAQYAAQYABAgAFAgAEAAQa4n2de2X2PeAkA6swysuEXFwEGOBS56MGfuXAlwGtH2C1oABBgABBgAECAAUCAAQABBgABBgAEGAD6McQBDCtzYCP69WgSrwnGOlwBA8tHWnwRYAAQYABAgAFAgAEAAQYAAQYABBgABBgAeDwsYQFJMlepjGKQFrnGi1mugIFb4gsIMAAIMAAIMAAgwAAgwACAAAOAAAMAAgwA3VnCAt6qGNmwmEXX95wrYAAYnAADgAADgAADAAIMAAIMAAgwAAgwALDDEAdw2ieDGFmDB0Y4SI1hwRCHAINonj6UojG0cIVQ/3ALGgAKCDAACDAACDAAIMAAIMAAgAADgAADADsMcQDtGOJg6LAGxzqeXipAWOF+bkEDgAADgAADAAIMAAIMAAgwAAgwACDAANCPJaxJGTwY6EMYXM3xM2Xk97D3rytg8MsSNP5FU4ABAAEGAAEGAAQYAAQYABBgABBgAECAAaCSB6MHY7QBuC0QReMZkXOu84Jc9HtzBQwABQQYAAQYAAQYABBgABBgAECAAUCAAQABBmBVFWMi0fEPS1hNWLgCZo5SWeQaL2a5AgaAAgIMAAIMAAIMAAgwAAgwACDAACDAAMAOQxwXM7AB3HqoTzCysYqnl+BYNL3JATjDLWgAEGAAEGAAQIABQIABAAEGAAEGAAQYAPpZakwie5Uqc4zDYhbQ7VxisABnrkhFo5T99So+DAIMiPRa3IIGAAEGAAEGAAQYAAQYABBgABBgAECAAaCfsoex7x7s+OTB8+yvd/frBix8qBvZcAUsIgDQLMAAIMAAgAADgAADAAIMAAIMAAgwAAgwAPBW6mJKxcDGLKsvxkkA56YrYOECAAEGAAEGAAQYAAQYABBgABBgAECAAUCAeXgwHmC5cz/6ByODFyIylhlGTKrec5mfB2My+GXeFTDgwAQEGAAEGAAQYAAQYABAgAFAgAEAAQaAHp5eAvhc9rO7ka9nsAMmO0eiH2pjAWMZ/bD2fjv+M81c4Oq+5tX577rSEprP6zFuQQOAAAOAAAMAAgwAAgwACDAACDAAIMAA0I+HpyfU/cF+D+3DGJ9pn9VrmaL0QQS6Xylt29Z5ucyi4jFuQQOAAAOAAAMAAgzAqPz7rwADgAADgAADAAIMADPzj+IndH4wvuTN5D9ZgDPO9xdmCevCHzzACmdhJHLZa1kznMFuQQNwOXfIBBgABBgABBgAEGAAEGAAQIABQIAX5b/UAzgLT712XoJrVT187kMBODN7s4QFgKAXBN0taACm1flKWYABEEwBBgABBgAEGAAEGAAQYAD4K/oYkgCTwggH4Azrfx4udVBX/CZk4Qqg7jzPPIOzz19XwABQQIABQIABQIABAAEGAAEGAAQYAAQYANhh1OGX7LEOwxkAczQg+zzfZn/BjrxwFYsoAKzVG7egAaCAAAOAAAOAAAMAAgwAAgwACDAACDAAAAD003rNKToLGV0dsXAFQBduQQOAAAOAAAMAAgwAAgwACDAACDAAIMAA0M832zOFxKECr1EAAAAASUVORK5CYII=");
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--bg:#0D1117;--surface:#171D27;--fg:#FFF4D6;--muted:#CDBB93;--accent:#F7B538;--rule:#FFF4D6;--on-accent:#0D1117;color-scheme:dark}
+}
+:root[data-theme="dark"]{--bg:#0D1117;--surface:#171D27;--fg:#FFF4D6;--muted:#CDBB93;--accent:#F7B538;--rule:#FFF4D6;--on-accent:#0D1117;color-scheme:dark}
+
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{max-width:100%;display:block}
+button{font:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+::selection{background:var(--gold);color:var(--navy)}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--osd);font-weight:400;line-height:.95;margin:0;text-wrap:balance}
+h1{font-size:clamp(38px,5.5vw,68px)}
+h2{font-size:clamp(28px,3.6vw,42px)}
+p{margin:0;max-width:66ch}
+.kicker{font-family:var(--osd);font-size:19px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+
+/* Flechas pixeladas (toman el color del texto) */
+.pa{display:inline-block;width:.75em;height:.75em;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;vertical-align:-.02em;flex:none}
+.pa-r{--m:var(--pa-r)}.pa-l{--m:var(--pa-l)}.pa-ur{--m:var(--pa-ur)}
+.next .pa{width:30px;height:30px}
+
+/* Imágenes de marca como máscara (toman el color del texto) */
+.mk{display:block;background:currentColor;-webkit-mask:var(--m) center/contain no-repeat;mask:var(--m) center/contain no-repeat;max-width:100%}
+.mk-horse{--m:var(--m-horse);aspect-ratio:480/225}
+
+/* Cabecera */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:var(--b) solid var(--rule);view-transition-name:site-header}
+.bar{display:flex;align-items:center;gap:10px 20px;min-height:64px;flex-wrap:wrap;padding-block:8px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--accent)}
+.brand .mk-horse{width:54px}
+.brand span{font-family:var(--osd);font-size:23px;letter-spacing:.08em;color:var(--fg)}
+/* Navegación: la página actual se ve como una pestaña abierta que se une con la línea de abajo;
+   al pasar el mouse por las demás se rellenan de oscuro */
+nav{display:flex;gap:4px;align-self:stretch;align-items:center;flex-wrap:wrap;margin:-8px 0 -11px auto;padding-bottom:3px}
+nav a{font-family:var(--osd);font-size:22px;text-decoration:none;padding:3px 12px;border:2px solid transparent;line-height:1.2}
+nav a:not([aria-current]):hover{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+nav a[aria-current="page"]{align-self:stretch;display:flex;align-items:center;margin:10px 0 -3px;padding:0 14px 16px;border:var(--b) solid var(--rule);border-bottom:0;background:var(--bg);color:var(--fg);position:relative}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.neg{font-family:var(--osd);font-size:20px;background:var(--accent);color:var(--on-accent);border:0;padding:5px 12px;cursor:pointer;line-height:1.2}
+.neg:hover{background:var(--fg);color:var(--bg)}
+
+/* El pie siempre queda abajo, aunque la página sea corta */
+body{display:flex;flex-direction:column;min-height:100svh}
+main{flex:1}
+main>section{display:none;padding-bottom:96px}
+main>section.on{display:block}
+.pad-top{padding-top:48px}
+
+/* Portada */
+/* La portada ocupa toda la pantalla, desde la barra de arriba hasta el borde inferior */
+.cover-hero{background:var(--bg);color:var(--accent);border-bottom:var(--b) solid var(--rule);overflow:hidden;display:flex;min-height:calc(100svh - var(--hh,67px))}
+.cover-hero .wrap{width:100%;display:flex;flex-direction:column;padding-block:clamp(40px,7vw,88px) 0}
+.cover-title{font-family:'Alagard',var(--osd);font-size:clamp(48px,8vw,96px);color:var(--accent);letter-spacing:.02em;margin:0}
+.cover-sub{font-family:var(--osd);font-size:clamp(20px,2.4vw,30px);letter-spacing:.14em;text-transform:uppercase;color:var(--fg);margin:10px 0 clamp(28px,4vw,48px)}
+.track{position:relative;height:clamp(70px,9vw,120px);margin-top:auto}
+.track .horse-btn{position:absolute;bottom:-20px;width:clamp(110px,13vw,180px);left:-200px;animation:run 8s steps(64) infinite;background:none;border:0;padding:0;margin:0;color:inherit;cursor:pointer;z-index:2;outline:none;-webkit-tap-highlight-color:transparent}
+.track .horse-btn:focus,.track .horse-btn:focus-visible{outline:none}
+.track .horse-btn .horse-gif{width:100%;height:auto;image-rendering:pixelated;background:transparent}
+/* Color normal: caballoR.gif · Negativo: caballo.gif */
+.hg-dark{display:none!important}
+:root[data-theme="dark"] .hg-light{display:none!important}
+:root[data-theme="dark"] .hg-dark{display:block!important}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .hg-light{display:none!important}
+  :root:not([data-theme="light"]) .hg-dark{display:block!important}
+}
+.track::after{content:"";position:absolute;left:0;right:0;bottom:8px;height:3px;background:repeating-linear-gradient(to right,var(--accent) 0 12px,transparent 12px 24px);opacity:.5}
+@keyframes run{to{left:100%}}
+
+/* Minijuego del caballito (se activa al hacerle clic) */
+.track canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;image-rendering:pixelated}
+.track.playing .horse-btn{animation:none;cursor:default}
+.track.playing::after{animation:ground .45s linear infinite}
+.track.paused::after,.track.over::after{animation:none}
+@keyframes ground{to{background-position:-24px 0}}
+.hud{position:absolute;top:0;right:0;display:none;align-items:center;gap:16px;font-family:var(--osd);font-size:clamp(18px,2vw,24px);letter-spacing:.08em;color:var(--accent);z-index:3;font-variant-numeric:tabular-nums}
+.track.playing .hud{display:flex}
+.hud .hi{opacity:.65}
+.hud button{font-family:var(--osd);font-size:inherit;letter-spacing:.06em;background:none;color:var(--accent);border:2px solid var(--accent);padding:0 8px;line-height:1.2;cursor:pointer}
+.hud button:hover{background:var(--accent);color:var(--bg)}
+.msg{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;font-family:var(--osd);font-size:clamp(18px,2.2vw,26px);letter-spacing:.08em;color:var(--accent);text-align:center;white-space:nowrap;z-index:3}
+.track.playing .msg.show{display:block}
+.cover-hero.game{cursor:pointer;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin:64px 0 24px}
+.sec-head h2{font-size:clamp(26px,3.2vw,38px)}
+.page-head{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.go{font-family:var(--osd);font-size:22px;color:var(--accent);text-decoration:none;white-space:nowrap}
+.go:hover{text-decoration:underline}
+
+/* Medios (render real o textura de marcador) */
+.media{position:relative;background:var(--maroon);overflow:hidden;max-width:100%}
+.media canvas,.media img{display:block;width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.media img{image-rendering:auto}
+.media video{display:block;width:100%;height:100%;object-fit:cover}
+.p-hero video{object-fit:contain;background:var(--navy)}   /* video principal completo, sea vertical u horizontal */
+.gallery.real video{height:auto}
+.p-text.one{grid-template-columns:minmax(0,1fr)}
+.p-text.one p{font-size:17px;max-width:70ch}
+
+/* Proyectos: cuadrícula del inicio */
+.pgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.ptile{display:flex;flex-direction:column;gap:12px;text-decoration:none;min-width:0}
+.ptile .media{aspect-ratio:4/3;border:var(--b) solid var(--rule);transition:transform .25s}
+.ptile:hover .media{transform:translateY(-4px)}
+.ptile .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ptile h3{font-size:clamp(22px,2.4vw,30px)}
+.ptile:hover h3{color:var(--accent)}
+
+/* Proyectos: lista a lo ancho */
+.work{display:block;text-decoration:none;border-top:var(--b) solid var(--rule);padding-block:28px 32px}
+.work:last-child{border-bottom:var(--b) solid var(--rule)}
+.work-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 24px;flex-wrap:wrap;margin-bottom:18px}
+.work h3{font-size:clamp(28px,4.2vw,54px)}
+.work:hover h3{color:var(--accent)}
+.work .media{aspect-ratio:21/8;border:var(--b) solid var(--rule);transition:transform .25s}
+.work:hover .media{transform:scale(1.01)}
+.work-foot{display:flex;justify-content:space-between;align-items:baseline;gap:8px 24px;flex-wrap:wrap;margin-top:14px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tags span{font-family:var(--osd);font-size:17px;letter-spacing:.06em;text-transform:uppercase;border:2px solid var(--rule);padding:0 8px;line-height:1.35}
+
+/* Página de proyecto */
+.back{font-family:var(--osd);font-size:20px;text-decoration:none;color:var(--accent);display:inline-block;margin-bottom:24px}
+.back:hover{text-decoration:underline}
+.p-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px 32px;flex-wrap:wrap;margin-bottom:28px}
+.p-head h1{font-size:clamp(24px,3.5vw,44px)}   /* título de cada trabajo y estudio de caso */
+.p-hero{aspect-ratio:16/9;border:var(--b) solid var(--rule)}
+.facts{display:grid;grid-template-columns:repeat(var(--n,4),minmax(0,1fr));gap:var(--b);background:var(--rule);border:var(--b) solid var(--rule);border-top:0;margin:0 0 48px}
+.facts div{background:var(--surface);padding:14px 18px;min-width:0}
+.facts dt{font-family:var(--osd);font-size:17px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.facts dd{margin:2px 0 0;font-size:14px}
+.p-text{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 48px;margin-bottom:48px}
+.p-text p{font-size:15.5px}
+.gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.gallery .media{border:var(--b) solid var(--rule);aspect-ratio:1}
+.gallery .media.wide{grid-column:1/-1;aspect-ratio:21/9}
+.gallery .media.tall{aspect-ratio:4/5}
+.gallery.real{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));align-items:start}
+.gallery.real .media{aspect-ratio:auto;background:none}
+.gallery.real img{height:auto}
+.next{margin-top:64px;border:var(--b) solid var(--rule);background:var(--maroon);color:var(--gold);padding:28px;text-decoration:none;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.next h3{font-size:clamp(22px,2.8vw,34px)}
+.next .kicker{color:var(--cream)}
+.next:hover{background:var(--navy)}
+/* Estudio de caso: anterior y siguiente lado a lado */
+.pn{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:64px}
+.pn .next{margin-top:0}
+.facts-top{border-top:var(--b) solid var(--rule)}
+.end-img{margin-top:56px}
+.pn .prev{justify-content:flex-start}
+.year{font-size:clamp(20px,2.2vw,26px)}
+
+
+/* Estudios de caso */
+.case-line{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:32px;align-items:center;padding-block:28px;border-top:var(--b) solid var(--rule);text-decoration:none}
+/* En las páginas Trabajos y Estudios de caso el primer elemento no lleva línea arriba (igual que Sobre mí) */
+#works .work:first-child,#cases .case-line:first-child{border-top:0;padding-top:0}
+.case-line .media{aspect-ratio:16/10;border:var(--b) solid var(--rule)}
+.case-line .txt{display:flex;flex-direction:column;gap:10px;min-width:0}
+.case-line h3{font-size:clamp(24px,2.8vw,36px)}
+.case-line:hover h3{color:var(--accent)}
+.prose{max-width:720px;display:flex;flex-direction:column;gap:18px}
+.prose h2{font-size:clamp(24px,2.8vw,32px);margin-top:28px}
+.prose p{font-size:15.5px}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-top:2px solid var(--rule)}
+.steps li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:16px;padding:16px 0;border-bottom:2px solid var(--rule)}
+.steps .n{font-family:var(--osd);font-size:40px;line-height:.9;color:var(--accent)}
+.steps b{font-family:var(--osd);font-weight:400;font-size:24px;display:block;line-height:1.1;margin-bottom:4px}
+.maps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:900px;margin-top:18px}
+.maps figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.maps .media{aspect-ratio:1;border:var(--b) solid var(--rule)}
+.maps figcaption{font-family:var(--osd);font-size:19px;letter-spacing:.04em}
+
+/* Sobre mí / contacto */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+.about .bio{font-size:17px;line-height:1.7}
+.contact{background:var(--navy);color:var(--cream);border:var(--b) solid var(--rule);padding:clamp(24px,4vw,40px);display:flex;flex-direction:column;gap:20px}
+.contact h2{color:var(--gold)}
+.mail{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mail code{font-family:var(--body);font-size:clamp(15px,2vw,20px);word-break:break-all;user-select:all;border:2px solid var(--gold);padding:6px 12px;color:var(--cream)}
+.copy{font-family:var(--osd);font-size:22px;background:var(--gold);color:var(--navy);border:0;padding:6px 16px;cursor:pointer;line-height:1.2}
+.copy:hover{background:var(--cream)}
+.socials{display:flex;flex-direction:column}
+.socials a{display:flex;justify-content:space-between;align-items:center;font-family:var(--osd);font-size:clamp(22px,2.6vw,30px);text-decoration:none;color:var(--gold);padding:8px 0;border-bottom:2px solid rgba(247,181,56,.35);transition:padding .15s}
+.socials a:hover{color:var(--cream);padding-left:10px}
+.home-contact{margin-top:80px}
+
+/* Pie */
+footer{background:var(--maroon);color:var(--gold);border-top:var(--b) solid var(--rule)}
+/* Pie del mismo alto que la barra de arriba: caballito a la izquierda, "Gracias" en Alagard a la derecha */
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;min-height:64px;padding-block:8px}
+footer .mk-horse{width:74px}
+footer .gracias{font-family:'Alagard',var(--osd);font-size:38px;line-height:1;letter-spacing:.02em}
+
+/* Expansión del proyecto a página completa */
+::view-transition-group(*){animation-duration:.7s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.45s;animation-timing-function:ease}
+
+/* Cortina de píxeles (three.js) para el cambio de página; la barra de arriba queda visible */
+.wipe{position:fixed;left:0;top:var(--hh,67px);width:100vw;height:calc(100vh - var(--hh,67px));z-index:19;pointer-events:none;display:none}
+
+/* Visor 3D del proyecto: ocupa el mismo marco que la imagen principal */
+.viewer canvas{position:absolute;inset:0;width:100%!important;height:100%!important;image-rendering:auto}
+.viewer-hint{position:absolute;left:14px;bottom:10px;font-family:var(--osd);font-size:18px;letter-spacing:.06em;color:var(--gold);z-index:1;pointer-events:none;transition:opacity .3s}
+.viewer.spin .viewer-hint{opacity:0}
+
+
+/* ================= CAZA DEL CABALLITO =================
+   Estudios de caso: cruza la pantalla muy rápido (+400).
+   Trabajos: se asoma por los bordes (+200).
+   Sobre mí: corre por el bloque de Contacto (+200).
+   Al llegar a 1000: horse.jpg en pantalla completa + horse.mp3, y se reinicia. */
+.hunt-horse{position:fixed;left:0;top:0;width:clamp(90px,10vw,140px);background:none;border:0;padding:0;margin:0;cursor:pointer;z-index:15;display:none;-webkit-tap-highlight-color:transparent}
+.hunt-horse:focus{outline:none}
+.hunt-horse img{width:100%;height:auto;image-rendering:pixelated;pointer-events:none}
+.hunt-horse.in-contact{position:absolute;top:auto;bottom:10px;z-index:2}
+/* En el bloque oscuro de Contacto siempre va caballo.gif, para que se vea sobre el fondo */
+.hunt-horse.in-contact .hg-light{display:none!important}
+.hunt-horse.in-contact .hg-dark{display:block!important}
+.contact{position:relative;overflow:hidden}
+.pop{position:fixed;z-index:60;pointer-events:none;font-family:'Alagard',var(--osd);font-size:clamp(30px,3.4vw,44px);line-height:1;color:var(--accent);
+  text-shadow:-2px -2px 0 var(--bg),2px -2px 0 var(--bg),-2px 2px 0 var(--bg),2px 2px 0 var(--bg);transform:translate(-50%,-50%)}
+.hunt-score{position:fixed;right:20px;bottom:20px;z-index:60;pointer-events:none;font-family:'Alagard',var(--osd);font-size:clamp(26px,2.8vw,36px);line-height:1;
+  color:var(--accent);background:var(--bg);border:var(--b) solid var(--rule);padding:8px 14px 6px;opacity:0;transition:opacity .5s;font-variant-numeric:tabular-nums}
+.hunt-score.show{opacity:1;transition:opacity .15s}
+.jackpot{position:fixed;inset:0;z-index:100;background:#000;display:none;opacity:0;transition:opacity .35s}
+.jackpot.show{opacity:1}
+.jackpot img{width:100%;height:100%;object-fit:cover}
+
+@media (max-width:900px){
+  .facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .maps{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .about,.p-text{grid-template-columns:1fr;gap:28px}
+}
+@media (max-width:640px){
+  nav{margin-left:0;order:3;width:100%}
+  .neg{margin-left:auto}
+  .pgrid,.gallery{grid-template-columns:1fr}
+  .case-line{grid-template-columns:1fr;gap:16px}
+  .pn{grid-template-columns:1fr}
+  .work .media{aspect-ratio:16/10}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .track .horse-btn{left:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#inicio" aria-label="Emily Astor, inicio">
+      <i class="mk mk-horse" aria-hidden="true"></i>
+    </a>
+    <nav aria-label="Principal">
+      <a href="#inicio" data-r="inicio">Inicio</a>
+      <a href="#trabajos" data-r="trabajos">Trabajos</a>
+      <a href="#casos" data-r="casos">Estudios de caso</a>
+      <a href="#sobre-mi" data-r="sobre-mi">Sobre mí</a>
+    </nav>
+    <button class="neg" id="neg" type="button" aria-pressed="false">Negativo</button>
+  </div>
+</header>
+
+<main>
+  <!-- ================= INICIO ================= -->
+  <section id="v-inicio" aria-label="Inicio">
+    <div class="cover-hero">
+      <div class="wrap">
+        <h1 class="cover-title">PORTAFOLIO</h1>
+        <p class="cover-sub">Emily Astor</p>
+        <div class="track" id="track">
+          <canvas id="game" aria-hidden="true"></canvas>
+          <button class="horse-btn" id="horse" type="button" aria-label="Jugar con el caballito"><img src="caballoR.gif" alt="" class="horse-gif hg-light"><img src="caballo.gif" alt="" class="horse-gif hg-dark"></button>
+          <div class="hud"><span class="hi" id="hi">HI 00000</span><span id="score">00000</span><button type="button" id="quit" aria-label="Salir del juego">Salir</button></div>
+          <div class="msg" id="msg" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="sec-head"><h2>Trabajos</h2><a class="go" href="#trabajos">Ver todos <i class="pa pa-r" aria-hidden="true"></i></a></div>
+      <div class="pgrid" id="home-works"></div>
+      <div class="sec-head"><h2>Estudios de caso</h2><a class="go" href="#casos">Ver todos <i class="pa pa-r" aria-hidden="true"></i></a></div>
+      <div id="home-cases"></div>
+      <div class="home-contact contact-slot"></div>
+    </div>
+  </section>
+
+  <!-- ================= TRABAJOS ================= -->
+  <section id="v-trabajos" aria-label="Trabajos">
+    <div class="wrap pad-top">
+      <h1 class="sr-only">Trabajos</h1>
+      <div id="works"></div>
+    </div>
+  </section>
+
+  <!-- ================= PROYECTO (página completa) ================= -->
+  <section id="v-proyecto" aria-label="Proyecto"><div class="wrap pad-top" id="project"></div></section>
+
+  <!-- ================= ESTUDIOS DE CASO ================= -->
+  <section id="v-casos" aria-label="Estudios de caso">
+    <div class="wrap pad-top">
+      <h1 class="sr-only">Estudios de caso</h1>
+      <div id="cases"></div>
+    </div>
+  </section>
+
+  <!-- ================= ESTUDIO DE CASO (página completa) ================= -->
+  <section id="v-caso" aria-label="Estudio de caso"><div class="wrap pad-top" id="article"></div></section>
+
+  <!-- ================= SOBRE MÍ ================= -->
+  <section id="v-sobre-mi" aria-label="Sobre mí">
+    <div class="wrap pad-top">
+      <h1 class="sr-only">Sobre mí</h1>
+      <div class="about">
+        <p class="bio">Hola, soy Emily Astor, diseñadora digital enfocada en diseño 3D, con enfoque en texturas. Mi trabajo surge de un proceso creativo alimentado por todo lo que he observado y consumido, a la vez entendiendo la urgencia que algunos proyectos pueden tener.</p>
+        <div class="contact-slot"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <i class="mk mk-horse" aria-hidden="true"></i>
+    <span class="gracias">Gracias</span>
+  </div>
+</footer>
+
+<script>
+/* ================= DATOS (edita aquí) ================= */
+var CONTACTO={
+  correo:"astoremily23@gmail.com",
+  redes:[["Instagram","https://www.instagram.com/astoremily23/"],["Behance","https://www.behance.net/astoremily"],["Twitter","https://x.com/AstorEmily23"]]
+};
+var L1="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+var L2="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+var L3="Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+/* cover: render principal. galeria: más imágenes (rutas). Si están vacías se usan texturas de marcador.
+   modelo: si el trabajo lo tiene, la imagen principal de su página se vuelve un visor 3D que gira al pasar el mouse. */
+var works=[
+  {id:"ojos",t:"Ojos",tags:["3D","Texturas"],tex:"cells",seed:3,
+   cover:"OJOS2.png",                                   /* imagen de las tarjetas en Inicio y Trabajos */
+   galeria:["OJOS1.png","OJOS2.png"],                   /* imágenes de abajo en la página del trabajo */
+   modelo:"OJOS.glb",zoom:1.8,  /* modelo 3D (en la misma carpeta que este HTML). Si no carga, se ve una figura de muestra */
+   desc:"En este proyecto busqué crear un ojo lo más realista posible, enfocándose especialmente en el pintado de sus detalles y texturas. Utilicé Blender para el modelado y Adobe Substance 3D Painter para trabajar los colores y matices, explorando cómo pequeños detalles pueden darle más profundidad y realismo al resultado final.",
+   facts:{"Año":"2026",Rol:"Modelado y texturizado",Herramientas:"Blender, Substance 3D Painter"}},
+  {id:"vi",t:"Vi",tags:["3D","Fan art"],tex:"weave",seed:7,
+   cover:"vis.png",                                     /* imagen de las tarjetas en Inicio y Trabajos */
+   galeria:["vis.png","vis1.png","vis2.png"],
+   modelo:"vis.glb",zoom:1.6,   /* zoom: tamaño del modelo en el visor (1 = normal) */
+   desc:"En este proyecto trabajé en el modelado y pintado de la cabeza de Vi, de la serie Arcane. Mi objetivo fue mantener la estética visual de la serie, prestando especial atención a sus rasgos, colores y estilo artístico. Todo el proceso se realizó en Blender, lo que me permitió explorar cómo adaptar un diseño 2D a un modelo tridimensional sin perder su esencia original.",
+   facts:{"Año":"2026",Rol:"Modelado y pintado",Herramientas:"Blender"}},
+  {id:"lirio",t:"Lirio",tags:["3D","Texturas"],tex:"scan",seed:11,
+   cover:"lirio1.png",
+   galeria:["lirio1.png","lirio2.png","lirio3.png"],
+   modelo:"lirio.glb",zoom:1.6,
+   desc:"Como parte de un proyecto más grande, trabajé en el modelado y texturizado de flores basadas en ilustraciones 2D. Mi objetivo fue recrear su volumen y color lo más fielmente posible. Este ejemplar fue el más complicado en el tema del modelado, por las formas irregulares que presenta la flor.",
+   facts:{"Año":"2026",Rol:"Modelado y texturizado",Herramientas:"Blender"}},
+  {id:"backrooms",t:"Backrooms",tags:["3D","Animación"],tex:"rust",seed:2,
+   cover:"render1.png",                                 /* imagen de las tarjetas */
+   video:"BackroomsR_1.mp4",                            /* video principal, arriba en su página (en vez del visor 3D) */
+   galeria:["BackroomsR.mp4","render1.png","render2.png"],  /* acepta imágenes y videos .mp4 */
+   desc:"Un render en homenaje a los Backrooms (Me gustó bastante la película eh). Se hizo el modelo, texturizado y animación. Se trabajó en formato vertical y horizontal. Trabajé puramente en Blender.",
+   facts:{"Año":"2026",Rol:"Modelado, texturizado y animación",Herramientas:"Blender",Formato:"Vertical y horizontal"}}
+];
+/* Estudios de caso. intro: párrafos de presentación. pasos: [título, texto]. galeria: imágenes al final de la página */
+var cases=[
+  {id:"mutarte",t:"Mutarte",fecha:"2026",tex:"tiles",seed:5,
+   img:"mutarte1.jpg",                                  /* imagen de la tarjeta en Inicio y Estudios de caso */
+   galeria:["mutarte1.jpg","mutarte2.jpg","mutarte3.jpg"],
+   facts:{Proyecto:"Revista digital",Rol:"Scrum Master",Equipo:"20 personas",Metodología:"Scrum"},
+   intro:[
+    "Para este proyecto se nos pidió desarrollar una revista digital. El trabajo se organizó bajo la metodología Scrum, donde asumí el rol de Scrum Master en un equipo de 20 personas.",
+    "Me encargué de coordinar el flujo de trabajo y facilitar la comunicación entre áreas, asegurando que cada sprint se cumpliera dentro de los tiempos establecidos."
+   ],
+   pasos:[
+    ["Asignación y organización inicial","En primer lugar, se realizó la asignación de roles y la conformación de los equipos de trabajo, así como la organización de las herramientas necesarias para el desarrollo del proyecto. Posteriormente, se llevó a cabo el análisis general del proyecto y la planificación de los pasos a seguir. A medida que avanzaban los sprints, algunos tiempos de trabajo se fueron extendiendo debido a las necesidades que surgían durante el proceso."],
+    ["Distribución de tareas","Una vez establecida la organización inicial, se procedió a la asignación de tareas a cada equipo. Debido a que algunos grupos no contaban con una carga de trabajo considerable durante las primeras etapas, se aprovechó este tiempo para que pudieran preparar y desarrollar los recursos necesarios para apoyar el trabajo de otros equipos en las siguientes fases del proyecto."],
+    ["Percances iniciales y reorganización","Durante las primeras etapas surgieron algunos inconvenientes, principalmente relacionados con el retraso del apartado visual, lo que generó una reacción en cadena que afectó el avance de los demás equipos. Sin embargo, esta dificultad pudo ser compensada mediante horas adicionales de trabajo y la reorganización de los integrantes, trasladando a varios miembros entre equipos para reforzar las áreas que más lo necesitaban."],
+    ["Desarrollo de la programación","Con el avance del proyecto, se dio inicio a la etapa de programación, la cual presentó diversos incidentes técnicos y dificultades que, afortunadamente, pudieron resolverse a tiempo. Paralelamente, comenzó a hacerse evidente el cansancio de los integrantes, debido a que se trataba de un semestre particularmente exigente. A pesar de ello, el compromiso y el apoyo mutuo entre los equipos permitieron superar las dificultades y continuar con el desarrollo."],
+    ["Presentación final","Finalmente, se logró presentar un trabajo complejo y completo, que integró los esfuerzos de todos los equipos a lo largo del proceso. A pesar de los inconvenientes, los retrasos y el esfuerzo adicional requerido, el resultado final fue satisfactorio, tanto para el docente como para los integrantes del proyecto, quienes pudieron ver reflejado su compromiso y trabajo colaborativo en el producto presentado."]
+   ]}
+];
+
+/* ================= TEXTURAS DE MARCADOR ================= */
+var P={navy:[13,17,23],maroon:[120,1,22],gold:[247,181,56],cream:[255,244,214]};
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function mix(a,b,t){return[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]}
+function ramp(st,t){t=Math.max(0,Math.min(1,t));var n=st.length-1,i=Math.min(Math.floor(t*n),n-1);return mix(st[i],st[i+1],t*n-i)}
+function noiseGen(r,g){var v=[];for(var i=0;i<(g+1)*(g+1);i++)v.push(r());
+  return function(u,w){var x=u*g,y=w*g,xi=Math.min(Math.floor(x),g-1),yi=Math.min(Math.floor(y),g-1),fx=x-xi,fy=y-yi;
+    fx=fx*fx*(3-2*fx);fy=fy*fy*(3-2*fy);var a=v[yi*(g+1)+xi],b=v[yi*(g+1)+xi+1],c=v[(yi+1)*(g+1)+xi],d=v[(yi+1)*(g+1)+xi+1];
+    return a+(b-a)*fx+(c-a)*fy+(a-b-c+d)*fx*fy}}
+function fbmGen(r){var n1=noiseGen(r,4),n2=noiseGen(r,9),n3=noiseGen(r,19);return function(u,v){return n1(u,v)*.55+n2(u,v)*.3+n3(u,v)*.15}}
+function field(kind,seed,W,H){
+  var r=rng(seed*977+13),f=fbmGen(r),f2=fbmGen(r),h=new Float32Array(W*H),c=new Array(W*H),x,y,i;
+  if(kind==="cells"){
+    var pts=[],cols=[],n=Math.round(W*H/380)+6;for(i=0;i<n;i++){pts.push([r()*W,r()*H]);cols.push(.25+r()*.6)}
+    for(y=0;y<H;y++)for(x=0;x<W;x++){var d1=1e9,d2=1e9,k=0;
+      for(i=0;i<n;i++){var dx=x-pts[i][0],dy=y-pts[i][1],d=dx*dx+dy*dy;if(d<d1){d2=d1;d1=d;k=i}else if(d<d2)d2=d}
+      var e=Math.sqrt(d2)-Math.sqrt(d1),nz=f(x/W,y/H);
+      h[y*W+x]=Math.min(1,e/4)*.7+nz*.3;
+      c[y*W+x]=e<1.3?P.navy:mix(ramp(seed>20?[P.navy,P.maroon,P.gold]:[P.maroon,P.gold,P.cream],cols[k]),P.maroon,nz*.35)}
+  }else if(kind==="weave"){
+    var band=[P.maroon,P.gold,P.navy,P.gold,P.cream,P.maroon];
+    for(y=0;y<H;y++)for(x=0;x<W;x++){var over=((x>>1)+(y>>1))%2===0,nz=f(x/W,y/H);
+      var col=over?band[(Math.floor(x/6)+seed)%band.length]:band[(Math.floor(y/8)+seed+2)%band.length];
+      var sh=over?(.8+.2*((y%2)/2)):(.7+.2*((x%2)/2));
+      h[y*W+x]=(over?.75:.4)+nz*.2;c[y*W+x]=mix(col,P.navy,(1-sh)*.9+nz*.15)}
+  }else if(kind==="tiles"){
+    var sq=seed>10,bw=sq?12:16,bh=sq?12:8,bc={};
+    for(y=0;y<H;y++)for(x=0;x<W;x++){var row=Math.floor(y/bh),off=(row%2&&!sq)?bw/2:0,bx=(x+off)%bw,by=y%bh,id=row+"_"+Math.floor((x+off)/bw),nz=f(x/W,y/H);
+      if(bc[id]===undefined)bc[id]=r();
+      var gr=bx<1||by<1;
+      h[y*W+x]=gr?.1:.65+nz*.35;
+      c[y*W+x]=gr?mix(P.cream,P.navy,.45):mix(ramp(sq?[P.cream,P.gold]:[P.maroon,P.gold],.25+bc[id]*.6),P.navy,nz*.25)}
+  }else if(kind==="rust"){
+    for(y=0;y<H;y++)for(x=0;x<W;x++){var n2=f(x/W,y/H),m=f2(x/W,y/H);
+      h[y*W+x]=n2;
+      c[y*W+x]=n2>.5?mix(P.gold,P.cream,m*.4):(n2>.46?P.navy:ramp([P.navy,P.maroon,mix(P.maroon,P.gold,.4)],n2/.46))}
+  }else{
+    for(y=0;y<H;y++)for(x=0;x<W;x++){var u=x/W,v=y/H,nz=f(u,v);
+      var base=mix(P.navy,P.maroon,Math.max(0,u-.1)*.8);
+      var tvx=.56,tvy=.3,tw=.26,th=.32,inTv=u>tvx&&u<tvx+tw&&v>tvy&&v<tvy+th;
+      var ddx=Math.max(tvx-u,0,u-tvx-tw),ddy=Math.max(tvy-v,0,v-tvy-th),gl=Math.max(0,1-Math.sqrt(ddx*ddx+ddy*ddy)*3.2);
+      var col2=inTv?mix(P.gold,P.cream,nz*.6):mix(base,P.gold,gl*gl*.6);
+      if(v>.78)col2=mix(col2,P.navy,.5);
+      if(y%3===0)col2=mix(col2,P.navy,.45);
+      h[y*W+x]=inTv?1:gl*.6+nz*.2;c[y*W+x]=col2}
+  }
+  return{h:h,c:c,f2:f2}
+}
+var cache={};
+function paint(cv,kind,seed,map){
+  var W=cv.width,H=cv.height,key=kind+seed+"_"+W+"x"+H,F=cache[key]||(cache[key]=field(kind,seed,W,H));
+  var ctx=cv.getContext("2d"),img=ctx.createImageData(W,H),d=img.data;
+  for(var y=0;y<H;y++)for(var x=0;x<W;x++){var i=y*W+x,o=i*4,col;
+    if(map==="rough"){var g=255*(.25+.6*F.f2(x/W,y/H));col=[g,g,g]}
+    else if(map==="normal"){var hl=F.h[y*W+Math.max(0,x-1)],hr=F.h[y*W+Math.min(W-1,x+1)],hu=F.h[Math.max(0,y-1)*W+x],hd=F.h[Math.min(H-1,y+1)*W+x];
+      var nx=(hl-hr)*2,ny=(hu-hd)*2,l=Math.sqrt(nx*nx+ny*ny+1);col=[(nx/l*.5+.5)*255,(ny/l*.5+.5)*255,(1/l*.5+.5)*255]}
+    else if(map==="ao"){var a=255*(.3+.7*Math.pow(F.h[i],.6));col=[a,a,a]}
+    else col=F.c[i];
+    d[o]=col[0];d[o+1]=col[1];d[o+2]=col[2];d[o+3]=255}
+  ctx.putImageData(img,0,0)
+}
+function esc(s){return String(s).replace(/[&<>"]/g,function(m){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]})}
+/* Un medio: tu imagen si existe, si no una textura. vt = nombre para la animación de expansión */
+function media(src,kind,seed,w,h,cls,alt,vt,map){
+  var inner=src&&/\.(mp4|webm|mov)$/i.test(src)?'<video src="'+src+'" autoplay muted loop playsinline controls preload="metadata" aria-label="'+esc(alt)+'"></video>':
+    src?'<img src="'+src+'" alt="'+esc(alt)+'" loading="lazy">':'<canvas width="'+w+'" height="'+h+'" data-kind="'+kind+'" data-seed="'+seed+'" data-map="'+(map||"albedo")+'" role="img" aria-label="'+esc(alt)+'"></canvas>';
+  return '<div class="media '+(cls||"")+'"'+(vt?' data-vt="'+vt+'"':'')+'>'+inner+'</div>'
+}
+function paintAll(root){root.querySelectorAll("canvas[data-kind]").forEach(function(cv){if(!cv.dataset.done){paint(cv,cv.dataset.kind,+cv.dataset.seed,cv.dataset.map);cv.dataset.done=1}})}
+function tags(w){return '<div class="tags">'+w.tags.map(function(t){return '<span>'+esc(t)+'</span>'}).join("")+'</div>'}
+
+/* ================= LISTAS ================= */
+function ptile(w){
+  return '<a class="ptile" href="#proyecto-'+w.id+'" data-open="'+w.id+'">'+media(w.cover,w.tex,w.seed,96,72,"",w.t,"p-"+w.id)+
+    '<div class="row"><h3>'+esc(w.t)+'</h3>'+tags(w)+'</div></a>'
+}
+function workBlock(w){
+  return '<a class="work" href="#proyecto-'+w.id+'" data-open="'+w.id+'">'+
+    '<div class="work-top"><h3>'+esc(w.t)+'</h3>'+tags(w)+'</div>'+
+    media(w.cover,w.tex,w.seed,126,48,"",w.t,"p-"+w.id)+
+    '<div class="work-foot"><p class="muted">'+(w.desc?esc(w.desc):L1)+'</p><span class="go">Abrir <i class="pa pa-r" aria-hidden="true"></i></span></div></a>'
+}
+function caseLine(c){
+  return '<a class="case-line" href="#caso-'+c.id+'" data-open="'+c.id+'">'+media(c.img,c.tex,c.seed,96,60,"",c.t,"c-"+c.id)+
+    '<div class="txt"><span class="kicker">'+c.fecha+'</span><h3>'+esc(c.t)+'</h3><p class="muted">'+esc(c.intro?c.intro[0]:L1)+'</p><span class="go">Leer <i class="pa pa-r" aria-hidden="true"></i></span></div></a>'
+}
+function contactBlock(){
+  return '<div class="contact"><h2>Contacto</h2>'+
+    '<div class="mail"><code>'+CONTACTO.correo+'</code><button class="copy" type="button">Copiar</button></div>'+
+    '<div class="socials">'+CONTACTO.redes.map(function(r){return '<a href="'+r[1]+'" target="_blank" rel="noopener">'+r[0]+'<i class="pa pa-ur" aria-hidden="true"></i></a>'}).join("")+'</div></div>'
+}
+document.getElementById("home-works").innerHTML=works.map(ptile).join("");
+document.getElementById("works").innerHTML=works.map(workBlock).join("");
+document.getElementById("home-cases").innerHTML=cases.map(caseLine).join("");
+document.getElementById("cases").innerHTML=cases.map(caseLine).join("");
+document.querySelectorAll(".contact-slot").forEach(function(s){s.innerHTML=contactBlock()});
+
+/* ================= PÁGINAS COMPLETAS ================= */
+/* Botones de abajo: anterior y siguiente (si solo hay uno, no se muestran) */
+function pnHtml(list,i,pre,anterior,siguiente){
+  if(list.length<2)return "";
+  var pv=list[(i-1+list.length)%list.length],nx=list[(i+1)%list.length];
+  return '<div class="pn">'+
+    '<a class="next prev" href="#'+pre+pv.id+'">'+'<i class="pa pa-l" aria-hidden="true"></i>'+'<div><span class="kicker">'+anterior+'</span><h3>'+esc(pv.t)+'</h3></div></a>'+
+    '<a class="next" href="#'+pre+nx.id+'"><div><span class="kicker">'+siguiente+'</span><h3>'+esc(nx.t)+'</h3></div>'+'<i class="pa pa-r" aria-hidden="true"></i>'+'</a>'+
+  '</div>'
+}
+function factsHtml(f){return '<dl class="facts" style="--n:'+Object.keys(f).length+'">'+Object.keys(f).map(function(k){return '<div><dt>'+k+'</dt><dd>'+esc(f[k])+'</dd></div>'}).join("")+'</dl>'}
+function project(id){
+  var i=works.findIndex(function(w){return w.id===id});if(i<0)return false;
+  var w=works[i],g=w.galeria||[];
+  /* Con imágenes reales: se muestran todas completas, sin recortar. Sin imágenes: texturas de marcador */
+  var real=g.filter(Boolean).length>0;
+  var shapes=real?g.map(function(){return ""}):["wide","tall","tall","wide"],gal=shapes.map(function(s,j){var W=s==="wide"?126:(s==="tall"?64:72),H=s==="wide"?54:(s==="tall"?80:72);
+    return media(g[j],w.tex,w.seed+(j+1)*31,W,H,s,w.t+" imagen "+(j+2),"",j===1?"normal":"albedo")}).join("");
+  document.getElementById("project").innerHTML='<a class="back" href="#trabajos"><i class="pa pa-l" aria-hidden="true"></i> Trabajos</a>'+
+    '<div class="p-head"><h1>'+esc(w.t)+'</h1>'+tags(w)+'</div>'+
+    (w.modelo!==undefined
+      ?'<div class="media p-hero viewer" data-vt="p-'+w.id+'" data-tex="'+w.tex+'" data-seed="'+w.seed+'" data-model="'+esc(w.modelo)+'" data-zoom="'+(w.zoom||1)+'" role="img" aria-label="Modelo 3D de '+esc(w.t)+'"><span class="viewer-hint">Pasa el cursor para girar 360°</span></div>'
+      :media(w.video||w.cover,w.tex,w.seed,128,72,"p-hero",w.t,"p-"+w.id))+factsHtml(w.facts)+
+    (w.desc?'<div class="p-text one"><p>'+esc(w.desc)+'</p></div>':'<div class="p-text"><p>'+L1+' '+L3+'</p><p>'+L2+'</p></div>')+
+    '<div class="gallery'+(real?' real':'')+'">'+gal+'</div>'+
+    pnHtml(works,i,"proyecto-","Trabajo anterior","Siguiente trabajo");
+  return true
+}
+function article(id){
+  var i=cases.findIndex(function(c){return c.id===id});if(i<0)return false;
+  var c=cases[i],g=(c.galeria||[]).filter(Boolean);
+  var intro=(c.intro||[]).map(function(t){return '<p>'+esc(t)+'</p>'}).join("");
+  var steps=(c.pasos||[]).map(function(p,j){return '<li><span class="n">'+(j+1)+'</span><div><b>'+esc(p[0])+'</b><p>'+esc(p[1])+'</p></div></li>'}).join("");
+  document.getElementById("article").innerHTML=
+    '<div class="p-head case-head"><h1>'+esc(c.t)+'</h1><span class="kicker year">'+c.fecha+'</span></div>'+
+    factsHtml(c.facts).replace('class="facts"','class="facts facts-top"')+
+    '<div class="prose">'+intro+(steps?'<h2>Proceso</h2><ol class="steps">'+steps+'</ol>':'')+'</div>'+
+    /* imágenes al final, antes de anterior/siguiente: completas y sin recortar */
+    (g.length?'<div class="gallery real end-img">'+g.map(function(src,j){return media(src,c.tex,c.seed,64,64,"",c.t+" imagen "+(j+1))}).join("")+'</div>'
+             :media(c.img,c.tex,c.seed,128,72,"p-hero end-img",c.t))+
+    pnHtml(cases,i,"caso-","Caso anterior","Siguiente caso");
+  return true
+}
+
+/* ================= NAVEGACIÓN ================= */
+var last=null;
+function route(){
+  var h=(location.hash||"").replace(/^#\/?/,"")||"inicio";
+  if(h===last)return;last=h;
+  var view=h,nav=h;
+  if(h.indexOf("proyecto-")===0){view=project(h.slice(9))?"proyecto":"trabajos";nav="trabajos"}
+  else if(h.indexOf("caso-")===0){view=article(h.slice(5))?"caso":"casos";nav="casos"}
+  if(["inicio","trabajos","proyecto","casos","caso","sobre-mi"].indexOf(view)<0){view="inicio";nav="inicio"}
+  document.querySelectorAll("main>section").forEach(function(s){s.classList.toggle("on",s.id==="v-"+view)});
+  document.querySelectorAll("nav a").forEach(function(a){a.dataset.r===nav?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
+  paintAll(document);if(window.mountViewers)mountViewers();if(window.horseHunt)horseHunt(view);window.scrollTo(0,0)
+}
+var canVT=!!document.startViewTransition&&!matchMedia("(prefers-reduced-motion: reduce)").matches;
+function setVT(name){document.querySelectorAll("[data-vt]").forEach(function(el){el.style.viewTransitionName=""});
+  if(!name)return;var on=document.querySelector("main>section.on [data-vt='"+name+"']");if(on)on.style.viewTransitionName="expand"}
+/* Al hacer clic en un proyecto o caso, su imagen crece hasta convertirse en la portada de la página completa.
+   El resto de enlaces usan la cortina de píxeles hecha con three.js. */
+document.addEventListener("click",function(e){
+  var a=e.target.closest("a[href^='#']");if(!a||e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;
+  var target=a.getAttribute("href");
+  if(target===location.hash){e.preventDefault();return}
+  var card=a.querySelector("[data-vt]");
+  if(card&&canVT){
+    e.preventDefault();
+    var name=card.dataset.vt;
+    document.querySelectorAll("[data-vt]").forEach(function(el){el.style.viewTransitionName=""});
+    card.style.viewTransitionName="expand";
+    var t=document.startViewTransition(function(){history.pushState(null,"",target);route();setVT(name)});
+    t.finished.then(function(){setVT(null)})
+  }else if(window.pixelWipe){
+    e.preventDefault();
+    pixelWipe(function(){history.pushState(null,"",target);route()})
+  }
+});
+window.addEventListener("hashchange",function(){if(window.pixelWipe)pixelWipe(route);else if(canVT)document.startViewTransition(route);else route()});route();
+
+/* Altura de la barra de arriba, para que la portada llene exactamente el resto de la pantalla */
+function setHH(){document.documentElement.style.setProperty("--hh",document.querySelector("header").offsetHeight+"px")}
+setHH();window.addEventListener("resize",setHH);
+
+/* ================= NEGATIVO (tema) ================= */
+var root=document.documentElement,btn=document.getElementById("neg");
+function isDark(){var t=root.getAttribute("data-theme");if(t)return t==="dark";return !!(window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)}
+function sync(){btn.setAttribute("aria-pressed",String(isDark()))}
+btn.addEventListener("click",function(){var t=isDark()?"light":"dark";root.setAttribute("data-theme",t);try{localStorage.setItem("astor-theme",t)}catch(e){}sync()});
+try{var saved=localStorage.getItem("astor-theme");if(saved)root.setAttribute("data-theme",saved)}catch(e){}
+sync();
+
+/* ================= COPIAR CORREO ================= */
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".copy");if(!b)return;
+  var code=b.parentNode.querySelector("code");
+  function done(){b.textContent="Copiado";setTimeout(function(){b.textContent="Copiar"},1800)}
+  function fallback(){var r=document.createRange();r.selectNodeContents(code);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Seleccionado"}
+  try{navigator.clipboard.writeText(code.textContent).then(done,fallback)}catch(err){fallback()}
+});
+
+/* ================= MINIJUEGO DEL CABALLITO =================
+   Clic en el caballito para empezar. Espacio, flecha arriba o tocar la portada para saltar. Esc o "Salir" para terminar. */
+(function(){
+  var track=document.getElementById("track"),hero=track.closest(".cover-hero"),horse=document.getElementById("horse"),
+      cv=document.getElementById("game"),ctx=cv.getContext("2d"),scoreEl=document.getElementById("score"),hiEl=document.getElementById("hi"),
+      msg=document.getElementById("msg"),quit=document.getElementById("quit");
+  var GOLD="#F7B538",CREAM="#FFF4D6";
+  /* Obstáculos en píxeles: cactus de 1 y 2 brazos, y una piedra baja */
+  var SHAPES=[
+    ["..##..","..##..","#.##..","#.##.#","####.#","..####","..##..","..##..","..##.."],
+    ["...##...",".#.##...",".#.##.#.",".####.#.","...####.","...##...","...##...","...##...","...##...","...##..."],
+    ["..####..",".######.","########"]
+  ];
+  var state="idle",y=0,vy=0,obs=[],speed=0,dist=0,nextGap=0,last=0,raf=0,score=0,hi=0,overAt=0,W=0,H=0,dpr=1,px=3,bottom=14,hx=40;
+  try{hi=+localStorage.getItem("astor-hi")||0}catch(e){}
+  function pad(n){return String(Math.floor(n)).padStart(5,"0")}
+  function hud(){scoreEl.textContent=pad(score);hiEl.textContent="HI "+pad(hi)}
+  function size(){
+    var r=track.getBoundingClientRect();dpr=window.devicePixelRatio||1;W=r.width;H=r.height;
+    cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+    px=Math.max(3,Math.round(horse.offsetWidth/34));hx=Math.min(48,W*.06)
+  }
+  function say(t){msg.textContent=t;msg.classList.toggle("show",!!t)}
+  function horseBox(){var w=horse.offsetWidth,h=horse.offsetHeight;return{x1:hx+w*.22,x2:hx+w*.82,y1:y,y2:y+h*.62}}
+  function jump(){
+    if(state==="ready"){state="play";say("");last=performance.now();return doJump()}
+    if(state==="over"){if(performance.now()-overAt>450)reset();return}
+    if(state==="play")doJump()
+  }
+  /* Altura del salto: 0.85 veces la altura del caballo (antes 1.35) */
+  function doJump(){if(y<=0.5){var hh=horse.offsetHeight;vy=Math.sqrt(2*2600*hh*.85)}}
+  function reset(){obs=[];y=0;vy=0;score=0;dist=0;speed=W*.42+180;nextGap=W*.55;track.classList.remove("over");state="play";say("");last=performance.now();hud()}
+  function start(){
+    if(state!=="idle")return;
+    size();
+    var cur=horse.getBoundingClientRect().left-track.getBoundingClientRect().left;
+    track.classList.add("playing");hero.classList.add("game");
+    horse.style.transition="none";horse.style.left=cur+"px";
+    requestAnimationFrame(function(){horse.style.transition="left .45s ease-out";horse.style.left=hx+"px"});
+    obs=[];y=0;vy=0;score=0;dist=0;speed=W*.42+180;nextGap=W*.55;state="ready";hud();
+    say("Espacio o toca para saltar");
+    horse.setAttribute("aria-label","Saltar");
+    last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)
+  }
+  function stop(){
+    state="idle";cancelAnimationFrame(raf);ctx.clearRect(0,0,W,H);
+    track.classList.remove("playing","over");hero.classList.remove("game");say("");
+    horse.style.transition="";horse.style.left="";horse.style.transform="";
+    horse.setAttribute("aria-label","Jugar con el caballito")
+  }
+  function spawn(){
+    var s=SHAPES[Math.random()<.18?2:(Math.random()<.5?0:1)];
+    obs.push({s:s,x:W+10,w:s[0].length*px,h:s.length*px})
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);ctx.fillStyle=getComputedStyle(hero).color||GOLD;
+    obs.forEach(function(o){
+      for(var r=0;r<o.s.length;r++)for(var c=0;c<o.s[r].length;c++)if(o.s[r][c]==="#")
+        ctx.fillRect(Math.round(o.x+c*px),Math.round(H-bottom-o.h+r*px),px,px)
+    });
+  }
+  function loop(t){
+    raf=requestAnimationFrame(loop);
+    if(!hero.offsetParent){stop();return}
+    var dt=Math.min(.033,(t-last)/1000);last=t;
+    if(state==="play"){
+      speed+=dt*14;dist+=speed*dt;score+=dt*speed/22;
+      vy-=2600*dt;y=Math.max(0,y+vy*dt);if(y===0&&vy<0)vy=0;
+      obs.forEach(function(o){o.x-=speed*dt});
+      obs=obs.filter(function(o){return o.x+o.w>-10});
+      nextGap-=speed*dt;
+      if(nextGap<=0){spawn();nextGap=speed*(.75+Math.random()*.9)+horse.offsetWidth*.6}
+      var b=horseBox();
+      for(var i=0;i<obs.length;i++){var o=obs[i];
+        if(b.x2>o.x+px*.5&&b.x1<o.x+o.w-px*.5&&b.y1<o.h-px*.5){
+          state="over";overAt=performance.now();track.classList.add("over");
+          if(score>hi){hi=Math.floor(score);try{localStorage.setItem("astor-hi",hi)}catch(e){}}
+          say("Fin · toca para reiniciar");break}}
+      hud()
+    }
+    horse.style.transform="translateY("+(-y)+"px)";
+    draw()
+  }
+  horse.addEventListener("click",function(e){e.stopPropagation();if(state==="idle")start();else jump()});
+  hero.addEventListener("pointerdown",function(e){if(state==="idle"||e.target.closest("button"))return;e.preventDefault();jump()});
+  quit.addEventListener("click",function(e){e.stopPropagation();stop()});
+  document.addEventListener("keydown",function(e){
+    if(state==="idle")return;
+    if(e.key===" "||e.key==="ArrowUp"||e.key==="w"||e.key==="W"){e.preventDefault();jump()}
+    else if(e.key==="Escape")stop()
+  });
+  window.addEventListener("resize",function(){if(state!=="idle"){size();horse.style.left=hx+"px"}});
+  hud()
+})();
+
+/* ================= CAZA DEL CABALLITO (score global) ================= */
+(function(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  var GIFS='<img class="hg-light" src="caballoR.gif" alt=""><img class="hg-dark" src="caballo.gif" alt="">';
+  var horse=document.createElement("button");horse.type="button";horse.className="hunt-horse";horse.setAttribute("aria-label","Atrapar al caballito");horse.innerHTML=GIFS;
+  document.body.appendChild(horse);
+  var hud=document.createElement("div");hud.className="hunt-score";hud.setAttribute("aria-live","polite");document.body.appendChild(hud);
+  var jp=document.createElement("div");jp.className="jackpot";jp.innerHTML='<img src="horse.jpg" alt="">';document.body.appendChild(jp);
+  var sound=new Audio("horse.mp3");sound.preload="auto";
+
+  var META=1000;   /* puntos para que aparezca horse.jpg */
+  var SONIDO_INICIO=0.6;   /* segundos que se saltan al inicio de horse.mp3 (súbelo para que suene aún antes) */
+  var score=0,mode=null,timer=0,anim=null,hudT=0,busy=false,points=0;
+  function rnd(a,b){return a+Math.random()*(b-a)}
+  function clear(){clearTimeout(timer);if(anim){anim.cancel();anim=null}horse.style.display="none";horse.style.transform=""}
+  function later(fn,ms){clearTimeout(timer);timer=setTimeout(fn,ms)}
+  function W(){return horse.offsetWidth||120}
+
+  /* Estudios de caso: cruza la pantalla muy rápido a distintas alturas */
+  function runFast(){
+    if(mode!=="casos"&&mode!=="caso")return;
+    if(horse.parentNode!==document.body)document.body.appendChild(horse);
+    horse.classList.remove("in-contact");horse.style.display="block";
+    var w=W(),y=rnd(innerHeight*.25,innerHeight*.8);
+    anim=horse.animate([{transform:"translate("+(-w)+"px,"+y+"px)"},{transform:"translate("+innerWidth+"px,"+y+"px)"}],{duration:rnd(900,1300),easing:"linear"});
+    anim.onfinish=function(){horse.style.display="none";later(runFast,rnd(500,1600))};
+  }
+  /* Trabajos: se asoma por el borde izquierdo o derecho y se esconde */
+  function peek(){
+    if(mode!=="trabajos"&&mode!=="proyecto")return;
+    if(horse.parentNode!==document.body)document.body.appendChild(horse);
+    horse.classList.remove("in-contact");horse.style.display="block";
+    var w=W(),y=rnd(innerHeight*.2,innerHeight*.8),right=Math.random()<.5;
+    var out=right?innerWidth:-w, inn=right?innerWidth-w*.55:-w*.45, flip=right?" scaleX(-1)":"";
+    function t(x,o){return {transform:"translate("+x+"px,"+y+"px)"+flip,offset:o,easing:"ease-in-out"}}
+    anim=horse.animate([t(out,0),t(inn,.2),t(inn,.75),t(out,1)],{duration:2400});
+    anim.onfinish=function(){horse.style.display="none";later(peek,rnd(2500,6000))};
+  }
+  /* Sobre mí: corre por el bloque negro de Contacto */
+  function runContact(){
+    if(mode!=="sobre-mi")return;
+    var box=document.querySelector("#v-sobre-mi .contact");if(!box)return;
+    if(horse.parentNode!==box)box.appendChild(horse);
+    horse.classList.add("in-contact");horse.style.display="block";
+    var w=W(),bw=box.clientWidth;
+    anim=horse.animate([{transform:"translateX("+(-w)+"px)"},{transform:"translateX("+bw+"px)"}],{duration:2600,easing:"linear"});
+    anim.onfinish=function(){horse.style.display="none";later(runContact,rnd(700,2000))};
+  }
+  var starts={casos:[runFast,400],caso:[runFast,400],trabajos:[peek,200],proyecto:[peek,200],"sobre-mi":[runContact,200]};
+
+  function showScore(){
+    hud.textContent="SCORE "+String(score).padStart(4,"0");
+    hud.classList.add("show");clearTimeout(hudT);hudT=setTimeout(function(){hud.classList.remove("show")},1800);
+  }
+  function pop(x,y,n){
+    var el=document.createElement("div");el.className="pop";el.textContent="+"+n;el.style.left=x+"px";el.style.top=y+"px";document.body.appendChild(el);
+    el.animate([{opacity:1,transform:"translate(-50%,-50%) scale(.8)"},{opacity:1,transform:"translate(-50%,-120%) scale(1.1)",offset:.3},{opacity:0,transform:"translate(-50%,-260%) scale(1)"}],{duration:1000,easing:"ease-out"}).onfinish=function(){el.remove()};
+  }
+  function jackpot(){
+    busy=true;clear();
+    jp.style.display="block";requestAnimationFrame(function(){jp.classList.add("show")});
+    setTimeout(function(){
+      jp.classList.remove("show");
+      setTimeout(function(){
+        jp.style.display="none";busy=false;score=0;
+        try{sound.pause()}catch(e){}
+        window.horseHunt(mode,true);            /* se reinicia el juego */
+      },400);
+    },2600);
+  }
+  horse.addEventListener("click",function(e){
+    e.stopPropagation();if(busy)return;
+    var n=points;score+=n;
+    pop(e.clientX,e.clientY,n);showScore();
+    clear();
+    if(score>=META){
+      try{sound.currentTime=SONIDO_INICIO;var pr=sound.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}   /* el sonido arranca en el mismo clic */
+      setTimeout(jackpot,150);return}
+    var f=starts[mode];if(f)later(f[0],rnd(1200,2500));
+  });
+  window.horseHunt=function(view,force){
+    if(view===mode&&!force)return;
+    mode=view;clear();if(busy)return;
+    var f=starts[view];if(!f)return;
+    points=f[1];later(f[0],view==="trabajos"||view==="proyecto"?rnd(1500,3000):600);
+  };
+  var on=document.querySelector("main>section.on");if(on)window.horseHunt(on.id.slice(2));
+})();
+</script>
+<script type="module">
+/* ================= THREE.JS: cortina de píxeles y visor 3D ================= */
+import * as THREE from "three";
+import {GLTFLoader} from "three/addons/loaders/GLTFLoader.js";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---- Cortina de píxeles para cambiar de página ---- */
+/* Colores exactos de la marca (sin corrección de color, para que el granate no se oscurezca) */
+function rgb(h){h=h.replace("#","");if(h.length===3)h=h.split("").map(c=>c+c).join("");const n=parseInt(h,16);return new THREE.Vector3((n>>16&255)/255,(n>>8&255)/255,(n&255)/255)}
+const wcv=document.createElement("canvas");wcv.className="wipe";wcv.setAttribute("aria-hidden","true");document.body.appendChild(wcv);
+const wr=new THREE.WebGLRenderer({canvas:wcv,alpha:true,antialias:false});
+const wscene=new THREE.Scene(),wcam=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+const wmat=new THREE.ShaderMaterial({
+  transparent:true,
+  uniforms:{p:{value:0},ph:{value:0},res:{value:new THREE.Vector2(1,1)},cell:{value:28},col:{value:rgb("#780116")},col2:{value:rgb("#F7B538")}},
+  vertexShader:"varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}",
+  fragmentShader:`uniform float p,ph,cell;uniform vec2 res;uniform vec3 col,col2;varying vec2 vUv;
+    float h(vec2 c){return fract(sin(dot(c,vec2(12.9898,78.233)))*43758.5453);}
+    void main(){
+      vec2 c=floor(vUv*res/cell);
+      float t=vUv.x*.55+(1.-vUv.y)*.1+h(c)*.35;
+      float a=ph<.5?step(t,p):step(p,t);
+      if(a<.5)discard;
+      float e=ph<.5?step(p-.07,t):1.-step(p+.07,t);
+      gl_FragColor=vec4(mix(col,col2,e),1.);
+    }`
+});
+wscene.add(new THREE.Mesh(new THREE.PlaneGeometry(2,2),wmat));
+function wsize(){const r=wcv.getBoundingClientRect();wr.setPixelRatio(Math.min(devicePixelRatio,2));wr.setSize(r.width,r.height,false);wmat.uniforms.res.value.set(r.width,r.height)}
+function ease(k){return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2}
+function tween(ms){return new Promise(res=>{const t0=performance.now();
+  function f(t){const k=Math.min(1,(t-t0)/ms);wmat.uniforms.p.value=ease(k)*1.1;wr.render(wscene,wcam);k<1?requestAnimationFrame(f):res()}
+  requestAnimationFrame(f)})}
+let busy=false;
+window.pixelWipe=async function(cb){
+  if(busy||reduce){cb();return}
+  busy=true;
+  const accent=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#780116";
+  const dark=accent.toUpperCase()==="#F7B538";
+  wmat.uniforms.col.value.copy(rgb(accent));wmat.uniforms.col2.value.copy(rgb(dark?"#780116":"#F7B538"));
+  wcv.style.display="block";wsize();
+  wmat.uniforms.ph.value=0;await tween(420);
+  cb();await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+  wmat.uniforms.ph.value=1;await tween(480);
+  wcv.style.display="none";busy=false;
+};
+
+/* ---- Visor 3D: el modelo gira 360° mientras el cursor está encima ---- */
+let active=null;
+window.mountViewers=function(){document.querySelectorAll(".viewer:not([data-on])").forEach(mount)};
+function mount(el){
+  el.dataset.on="1";
+  if(active)active.dispose();
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  el.prepend(renderer.domElement);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(32,16/9,.1,100);camera.position.set(0,.4,6.2);camera.lookAt(0,0,0);
+  scene.add(new THREE.HemisphereLight(0xFFF4D6,0x0D1117,1.1));
+  const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(3,4,5);scene.add(key);
+  const rim=new THREE.DirectionalLight(0xF7B538,1.4);rim.position.set(-4,1.5,-3);scene.add(rim);
+  const pivot=new THREE.Group();pivot.rotation.x=.1;scene.add(pivot);
+
+  /* Figura de muestra con la textura del proyecto (se reemplaza al cargar tu .glb) */
+  const tcv=document.createElement("canvas");tcv.width=128;tcv.height=64;
+  if(window.paint)paint(tcv,el.dataset.tex||"cells",+(el.dataset.seed||3),"albedo");
+  const tex=new THREE.CanvasTexture(tcv);tex.colorSpace=THREE.SRGBColorSpace;tex.magFilter=THREE.NearestFilter;
+  tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(4,1);
+  const sample=new THREE.Mesh(new THREE.TorusKnotGeometry(.75,.27,220,32),new THREE.MeshStandardMaterial({map:tex,roughness:.6,metalness:.05}));
+  pivot.add(sample);
+
+  if(el.dataset.model){
+    new GLTFLoader().load(el.dataset.model,function(g){
+      const o=g.scene,box=new THREE.Box3().setFromObject(o),size=box.getSize(new THREE.Vector3()).length()||1;
+      o.position.sub(box.getCenter(new THREE.Vector3()));
+      const wrap=new THREE.Group();wrap.add(o);wrap.scale.setScalar(2.4/size*(+el.dataset.zoom||1));
+      pivot.remove(sample);pivot.add(wrap);
+    },undefined,function(err){console.warn("No se pudo cargar el modelo 3D, se muestra la figura de muestra.",err)});
+  }
+
+  const TURN=Math.PI*2;
+  let angle=0,hover=false,last=performance.now(),raf=0;
+  function resize(){const w=el.clientWidth,h=el.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
+  const ro=new ResizeObserver(resize);ro.observe(el);
+  el.addEventListener("pointerenter",e=>{if(e.pointerType==="mouse"){hover=true;el.classList.add("spin")}});
+  el.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse"){hover=false;el.classList.remove("spin")}});
+  el.addEventListener("click",()=>{hover=!hover;el.classList.toggle("spin",hover)});
+  function loop(t){
+    if(!el.isConnected){dispose();return}
+    raf=requestAnimationFrame(loop);
+    const dt=Math.min(.05,(t-last)/1000);last=t;
+    if(hover){angle+=dt*TURN/3}               /* una vuelta completa cada 3 segundos */
+    else{const rest=Math.ceil(angle/TURN-.001)*TURN;angle+=(rest-angle)*Math.min(1,dt*3.5)}  /* termina la vuelta y vuelve al frente */
+    pivot.rotation.y=angle;
+    renderer.render(scene,camera);
+  }
+  function dispose(){
+    cancelAnimationFrame(raf);ro.disconnect();
+    scene.traverse(o=>{if(o.geometry)o.geometry.dispose();if(o.material)[].concat(o.material).forEach(m=>{if(m.map)m.map.dispose();m.dispose()})});
+    renderer.dispose();if(active&&active.el===el)active=null;
+  }
+  active={el,dispose};
+  resize();raf=requestAnimationFrame(loop);
+}
+window.mountViewers();
+</script>
+</body>
+</html>
